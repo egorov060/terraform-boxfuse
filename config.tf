@@ -66,7 +66,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "${file("/home/vm1/terraform1/meta_build.txt")}"
+    user-data = "${file("/home/vm1/terraform-boxfuse/meta_build.txt")}"
   }
 
 #################
@@ -116,7 +116,7 @@ resource "yandex_compute_instance" "vm-2" {
   }
 
   metadata = {
-    user-data = "${file("/home/vm1/terraform1/meta_prod.txt")}"
+    user-data = "${file("/home/vm1/terraform-boxfuse/meta_prod.txt")}"
   }
 }
 
