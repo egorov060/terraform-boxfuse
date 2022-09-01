@@ -12,3 +12,8 @@ variable "cloud_id" {
   description = "Yandex Cloud ID where resources will be created"
   default     = "there is cloud id"
 }
+
+variable "private_key_path" {
+  description = "Path to ssh private key, which would be used to access workers"
+  default     = "~/.ssh/id_rsa"
+}
