@@ -8,9 +8,9 @@ terraform {
 }
 
 provider "yandex" {
-  token     = "y0_AgAAAABjv7fsAATuwQAAAADNd1PsLO8otNcKSu-8ypOLZddyTkPTeQs"
-  cloud_id  = "b1g9q49j8o9p8fdicr7g"
-  folder_id = "b1gphfspgsih2mk1gt8o"
+  token     = var.token
+  cloud_id  = var.cloud_id
+  folder_id = var.folder_id
   zone      = "ru-central1-a"
 }
 
@@ -18,13 +18,13 @@ provider "yandex" {
 
 
 resource "yandex_iam_service_account" "sa" {
-  folder_id = "b1gphfspgsih2mk1gt8o"
+  folder_id = var.folder_id
   name      = "tf-test-sa"
 }
 
 // Grant permissions
 resource "yandex_resourcemanager_folder_iam_member" "sa-editor" {
-  folder_id = "b1gphfspgsih2mk1gt8o"
+  folder_id = var.folder_id
   role      = "storage.editor"
   member    = "serviceAccount:${yandex_iam_service_account.sa.id}"
 }
