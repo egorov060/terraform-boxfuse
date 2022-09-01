@@ -56,7 +56,7 @@ resource "yandex_compute_instance" "vm-1" {
 
   boot_disk {
     initialize_params {
-      image_id = "data.yandex_compute_image.ubuntu-20-04.id"
+      image_id = "fd81hgrcv6lsnkremf32"
     }
   }
 
@@ -106,7 +106,7 @@ resource "yandex_compute_instance" "vm-2" {
 
   boot_disk {
     initialize_params {
-      image_id = "data.yandex_compute_image.ubuntu-20-04.id"
+      image_id = "fd81hgrcv6lsnkremf32"
     }
   }
 
