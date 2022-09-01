@@ -77,9 +77,9 @@ provisioner "remote-exec" {
 	  "sudo apt install maven openjdk-8-jdk git awscli -y",
       "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git",
       "mvn package -f /home/vm1-1/boxfuse-sample-java-war-hello",
-#      "aws --profile default configure set aws_access_key_id ${yandex_iam_service_account_static_access_key.sa-static-key.access_key}",
-#      "aws --profile default configure set aws_secret_access_key ${yandex_iam_service_account_static_access_key.sa-static-key.secret_key}",
-#      "aws --endpoint-url=https://storage.yandexcloud.net/ s3 cp  /home/vm1-1/boxfuse-sample-java-war-hello/target/hello-1.0.war s3://tf-test-bucket-egorov060/"
+      "aws --profile default configure set aws_access_key_id ${yandex_iam_service_account_static_access_key.sa-static-key.access_key}",
+      "aws --profile default configure set aws_secret_access_key ${yandex_iam_service_account_static_access_key.sa-static-key.secret_key}",
+      "aws --endpoint-url=https://storage.yandexcloud.net/ s3 cp  /home/vm1-1/boxfuse-sample-java-war-hello/target/hello-1.0.war s3://tf-test-bucket-egorov060/"
 
     ]
 	connection {
