@@ -1,4 +1,4 @@
-
+#cloud-config
 users:
   - name: user1
     groups: sudo
