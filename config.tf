@@ -14,7 +14,18 @@ provider "yandex" {
   zone      = "ru-central1-a"
 }
 
-####
+#resource "yandex_vpc_network" "network-1" {
+#  name = "network1"
+#}
+
+#resource "yandex_vpc_subnet" "subnet1" {
+#  name           = "subnet1"
+#  zone           = "ru-central1-a"
+#  network_id     = yandex_vpc_network.network-1.id
+#  v4_cidr_blocks = ["10.128.0.0/24"]
+#}
+
+
 
 
 resource "yandex_iam_service_account" "sa" {
@@ -44,6 +55,11 @@ resource "yandex_storage_bucket" "test" {
 
 
 ######
+
+#data "yandex_compute_image" "ubuntu-20-04" {
+#  family = "ubuntu-2004-lts"
+#}
+
 #####
 
 resource "yandex_compute_instance" "vm-1" {
@@ -55,8 +71,11 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   boot_disk {
+    mode = "READ_WRITE"
     initialize_params {
       image_id = "fd81hgrcv6lsnkremf32"
+      type = "network-ssd"
+      size = 100
     }
   }
 
@@ -66,15 +85,14 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "${file("/home/vm1/terraform-boxfuse/meta_build.txt")}"
+     user-data = "${file("/home/vm1/terraform-boxfuse/meta_build.txt")}"
   }
-
-#################
 
 provisioner "remote-exec" {
     inline = [
+      "echo '${var.user}:${var.password}' | sudo chpasswd",
       "sudo apt update",
-	  "sudo apt install maven openjdk-8-jdk git awscli -y",
+      "sudo apt install maven openjdk-8-jdk git awscli -y",
       "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git",
       "mvn package -f /home/vm1-1/boxfuse-sample-java-war-hello",
       "aws --profile default configure set aws_access_key_id ${yandex_iam_service_account_static_access_key.sa-static-key.access_key}",
@@ -85,13 +103,10 @@ provisioner "remote-exec" {
 	connection {
       type = "ssh"
       user = "vm1-1"
-      private_key = var.private_key_path
+      private_key = file("~/.ssh/id_rsa")
       host = "${yandex_compute_instance.vm-1.network_interface.0.nat_ip_address}"
     }
   }
-
-##############
-
 
 
 }
@@ -105,8 +120,11 @@ resource "yandex_compute_instance" "vm-2" {
   }
 
   boot_disk {
+    mode = "READ_WRITE"
     initialize_params {
       image_id = "fd81hgrcv6lsnkremf32"
+      type = "network-ssd"
+      size = 100
     }
   }
 
@@ -120,6 +138,7 @@ resource "yandex_compute_instance" "vm-2" {
   }
 }
 
+
 resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
@@ -128,9 +147,8 @@ resource "yandex_vpc_subnet" "subnet-1" {
   name           = "subnet1"
   zone           = "ru-central1-a"
   network_id     = yandex_vpc_network.network-1.id
-  v4_cidr_blocks = ["10.128.0.0/24"]
+  v4_cidr_blocks = ["192.168.10.0/24"]
 }
-
 
 output "internal_ip_address_vm_1" {
   value = yandex_compute_instance.vm-1.network_interface.0.ip_address
@@ -148,4 +166,3 @@ output "external_ip_address_vm_1" {
 output "external_ip_address_vm_2" {
   value = yandex_compute_instance.vm-2.network_interface.0.nat_ip_address
 }
-

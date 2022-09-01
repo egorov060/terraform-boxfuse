@@ -17,3 +17,18 @@ variable "private_key_path" {
   description = "Path to ssh private key, which would be used to access workers"
   default     = "~/.ssh/id_rsa"
 }
+
+variable "public_key_path" {
+  description = "Path to ssh public key"
+  default     = "~/.ssh/id_rsa.pub"
+}
+
+variable "user" {
+  type = string
+  default = "vm1-1"
+}
+
+variable "password" {
+  type = string
+  default  = "in password"
+}
