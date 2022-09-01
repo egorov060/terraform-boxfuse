@@ -85,7 +85,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-     user-data = "${file("/home/vm2/terraform-boxfuse/meta_build.txt")}"
+     user-data = "${file("/home/vm1/terraform-boxfuse/meta_build.txt")}"
   }
 
 provisioner "remote-exec" {
@@ -134,7 +134,7 @@ resource "yandex_compute_instance" "vm-2" {
   }
 
   metadata = {
-    user-data = "${file("/home/vm2/terraform-boxfuse/meta_prod.txt")}"
+    user-data = "${file("/home/vm1/terraform-boxfuse/meta_prod.txt")}"
   }
 }
 
